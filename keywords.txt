@@ -1,0 +1,10 @@
+Geekble_LieDetector	KEYWORD1
+Read_SW			KEYWORD2
+attach			KEYWORD3
+RunMusic			KEYWORD4
+RunLights		KEYWORD5
+RunShocks		KEYWORD6
+RunResistanceCheck	KEYWORD7
+GetResistance		KEYWORD8
+ReturnResult_Truth		KEYWORD9
+ReturnResult_Lier		KEYWORD10

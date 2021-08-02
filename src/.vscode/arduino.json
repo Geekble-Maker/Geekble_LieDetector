@@ -1,0 +1,5 @@
+{
+    "sketch": "Geekble_LieDetector.cpp",
+    "configuration": "cpu=atmega328",
+    "board": "arduino:avr:nano"
+}
