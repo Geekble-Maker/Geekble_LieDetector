@@ -518,41 +518,24 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
 
     case Metrix_Lighting:
     {
-      uint8_t UpdateInterval = 149;    
-      // 140 bpm -> 430msec for 1 cycle
-      // row2, row3, row4, row3, row2, row1 -> 6 step
-      // 73 for each step
-      uint16_t Sequence_Lights = ((Time_Spent / UpdateInterval) % 4);
+      uint8_t UpdateInterval = 293;
+      uint8_t GRB_G0 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R0 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B0 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G1 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R1 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B1 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G2 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R2 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B2 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G3 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R3 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B3 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G4 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R4 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B4 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G5 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R5 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B5 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G6 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R6 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B6 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G7 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R7 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B7 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G8 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R8 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B8 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G9 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R9 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B9 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G10 = GRB_G / (1.1 * random(1, 10));  uint8_t GRB_R10 = GRB_R / (1.1 * random(1, 10));  uint8_t GRB_B10 = GRB_B / (1.1 * random(1, 10));
+      uint8_t GRB_G11 = GRB_G / (1.1 * random(1, 10));  uint8_t GRB_R11 = GRB_R / (1.1 * random(1, 10));  uint8_t GRB_B11 = GRB_B / (1.1 * random(1, 10));
 
-      switch (Sequence_Lights)
-      {
-        case 0:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          break;
-        case 1:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          break;
-        case 2:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          break;
-        case 3:
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          break;
-        default:
-          break;
-      }
+      byte_out(GRB_G0); byte_out(GRB_R0); byte_out(GRB_B0);   byte_out(GRB_G1); byte_out(GRB_R1); byte_out(GRB_B1);   byte_out(GRB_G2); byte_out(GRB_R2); byte_out(GRB_B2);   
+      byte_out(GRB_G3); byte_out(GRB_R3); byte_out(GRB_B3);   byte_out(GRB_G4); byte_out(GRB_R4); byte_out(GRB_B4);   byte_out(GRB_G5); byte_out(GRB_R5); byte_out(GRB_B5);   
+      byte_out(GRB_G6); byte_out(GRB_R6); byte_out(GRB_B6);   byte_out(GRB_G7); byte_out(GRB_R7); byte_out(GRB_B7);   byte_out(GRB_G8); byte_out(GRB_R8); byte_out(GRB_B8);   
+      byte_out(GRB_G9); byte_out(GRB_R9); byte_out(GRB_B9);   byte_out(GRB_G10); byte_out(GRB_R10); byte_out(GRB_B10);byte_out(GRB_G11); byte_out(GRB_R11); byte_out(GRB_B11);   
 
       *Update_Time_Lighting += UpdateInterval;
       break;
