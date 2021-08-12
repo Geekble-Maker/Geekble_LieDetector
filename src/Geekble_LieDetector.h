@@ -1,14 +1,20 @@
 /*
     Geekble_LieDetector.h - Library for Geekble LieDetector Module.
     Created by SooDragon @ Geekble Circuit Maker, July 20, 2021.
-    Special Thanks to Moster Energy Ultra.
+    Special Thanks to C8H10N4O2.
 */
 #include "Arduino.h"
 
 // WS2812 data transfer delay time
-#define nop2 {asm volatile("nop"); asm volatile("nop");}  // 125nSec
-#define nop6 {nop2; nop2; nop2;}   // 375nSec
-#define nop8 {nop6; nop2;}  // 500nSec
+#define LED_Qtt 12
+#define nop1 {asm volatile("nop");}                                             // 62.5nSec
+#define nop2 {asm volatile("nop"); asm volatile("nop");}                        // 125nSec
+#define nop3 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}   // 187.5nSec
+#define nop4 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}          // 250nSec
+#define nop5 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}          // 312.5nsec
+#define nop6 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}          // 375nSec
+#define nop7 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}          // 437.5nSec
+#define nop8 {asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop");}          // 500nSec
 
 #define ResistanceCheck_Repeat 53       // Max 60
 #define ResistanceCheck_Interval 991
@@ -44,7 +50,7 @@
         public:
         Geekble_LieDetector();          // Construct Class, Initialize function.
         uint8_t Geekble_LieDetector::Read_SW();
-        void attach(uint8_t _V_Check, uint8_t _Shock, uint8_t _R_Test, uint8_t _R_Check, uint8_t _Buzzer, uint8_t _SW_IO, uint8_t _SW_GND);
+        void Geekble_LieDetector::attach(uint8_t _V_Check, uint8_t _Shock, uint8_t _R_Test, uint8_t _R_Check, uint8_t _Buzzer, uint8_t _SW_IO, uint8_t _SW_GND);
         void Geekble_LieDetector::RunMusic(uint8_t Time_sec, uint16_t Notes[][2]);
         void Geekble_LieDetector::RunLights(uint8_t Time_sec, uint8_t Lights[]);
         void Geekble_LieDetector::RunShocks(uint8_t Time_sec, uint8_t Shocks[]);
@@ -54,11 +60,12 @@
         void Geekble_LieDetector::ReturnResult_Lier(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[], uint8_t Shocks[]);
 
         private:
-        void byte_out(uint8_t _byte) ;
+        void Geekble_LieDetector::byte_out(uint8_t _byte);
+        void Geekble_LieDetector::bytes_out(uint8_t _byte0G, uint8_t _byte0R, uint8_t _byte0B, uint8_t _byte1G, uint8_t _byte1R, uint8_t _byte1B, uint8_t _byte2G, uint8_t _byte2R, uint8_t _byte2B, uint8_t _byte3G, uint8_t _byte3R, uint8_t _byte3B, uint8_t _byte4G, uint8_t _byte4R, uint8_t _byte4B, uint8_t _byte5G, uint8_t _byte5R, uint8_t _byte5B, uint8_t _byte6G, uint8_t _byte6R, uint8_t _byte6B, uint8_t _byte7G, uint8_t _byte7R, uint8_t _byte7B, uint8_t _byte8G, uint8_t _byte8R, uint8_t _byte8B, uint8_t _byte9G, uint8_t _byte9R, uint8_t _byte9B, uint8_t _byte10G, uint8_t _byte10R, uint8_t _byte10B, uint8_t _byte11G, uint8_t _byte11R, uint8_t _byte11B);
         void Geekble_LieDetector::Shock(uint8_t ShockVoltage);
         uint16_t Geekble_LieDetector::ResistanceCheck_ADC2Kohm(uint16_t ADC_Value);
         uint16_t Geekble_LieDetector::ServiceEngine(uint8_t FunctionSelect, uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[], uint8_t Shocks[]);
-        void Program_Lighting (uint8_t GRB_R, uint8_t GRB_G, uint8_t GRB_B, uint8_t Lighting_Mode, uint32_t Time_Spent, uint32_t *Update_Time_Lighting);
+        void Geekble_LieDetector::Program_Lighting (uint8_t GRB_R, uint8_t GRB_G, uint8_t GRB_B, uint8_t Lighting_Mode, uint32_t Time_Spent, uint32_t *Update_Time_Lighting);
     };
 
 #endif

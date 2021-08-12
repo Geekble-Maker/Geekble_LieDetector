@@ -1,7 +1,7 @@
 /*
-    Geekble_Oscillator.cpp - Library for generate high frequency pulses.
-    Created by SooDragon @ Geekble Circuit Maker, April 19, 2021.
-    Released into the public domain.
+    Geekble_LieDetector.h - Library for Geekble LieDetector Module.
+    Created by SooDragon @ Geekble Circuit Maker, July 20, 2021.
+    Special Thanks to C8H10N4O2.
 */
 #include <Geekble_LieDetector.h>
 #include "Arduino.h"
@@ -128,24 +128,692 @@ void Geekble_LieDetector::attach(uint8_t _V_Check, uint8_t _Shock, uint8_t _R_Te
 
 void Geekble_LieDetector::byte_out(uint8_t _byte) 
 {
+  /* 
+   * WS2812B-Mini-V3 Timing
+   * T0H = 220ns ~ 380ns
+   * T0L = 580ns ~ 1us
+   * T1H = 580ns ~ 1us
+   * T1L = 580ns ~ 1us
+   * RES = 280us ~
+   * 
+   * nop1 = 62.5ns, nop2 = 125ns, nop3 = 187.5ns, nop4 = 250ns, nop5 = 312.5ns, nop6 = 375ns, nop7 = 437.5nsec, nop8 = 500nsec, nop9 = 562.5nSec, nop10 = 625nSec
+   * 220ns ~ 380ns -> 3.52clk ~ 6.08clk
+   * for loop escape takes 800us
+   */
+
   for (uint8_t i = 0; i < 8; i++) 
   {
-    if (_byte & 0x80) 
+    if ((0 < i) && (i < 7))
     {
-      PORTB |= (1 << PINB3);
-      nop8;
-      PORTB &= ~(1 << PINB3);
-    }
-    else
-    {
-      PORTB |= (1 << PINB3);
       nop2;
-      PORTB &= ~(1 << PINB3);
-      nop6;
     }
-    
+    if (_byte & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop5;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      nop1;
+      PORTB &= ~(1 << PINB3);
+    }
     _byte <<= 1;
   }
+}
+
+void Geekble_LieDetector::bytes_out(uint8_t _byte0G, uint8_t _byte0R, uint8_t _byte0B, uint8_t _byte1G, uint8_t _byte1R, uint8_t _byte1B, uint8_t _byte2G, uint8_t _byte2R, uint8_t _byte2B, uint8_t _byte3G, uint8_t _byte3R, uint8_t _byte3B, uint8_t _byte4G, uint8_t _byte4R, uint8_t _byte4B, uint8_t _byte5G, uint8_t _byte5R, uint8_t _byte5B, uint8_t _byte6G, uint8_t _byte6R, uint8_t _byte6B, uint8_t _byte7G, uint8_t _byte7R, uint8_t _byte7B, uint8_t _byte8G, uint8_t _byte8R, uint8_t _byte8B, uint8_t _byte9G, uint8_t _byte9R, uint8_t _byte9B, uint8_t _byte10G, uint8_t _byte10R, uint8_t _byte10B, uint8_t _byte11G, uint8_t _byte11R, uint8_t _byte11B)
+{
+  asm("cli");
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte0G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte0G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte0R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte0R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte0B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte0B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte1G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte1G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte1R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte1R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte1B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte1B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte2G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte2G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte2R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte2R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte2B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte2B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte3G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte3G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte3R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte3R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte3B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte3B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte4G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte4G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte4R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte4R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte4B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte4B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte5G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte5G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte5R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte5R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte5B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte5B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte6G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte6G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte6R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte6R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte6B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte6B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte7G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte7G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte7R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte7R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte7B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte7B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte8G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte8G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte8R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte8R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte8B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte8B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte9G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte9G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte9R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte9R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte9B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte9B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte10G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte10G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte10R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte10R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte10B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte10B <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte11G & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte11G <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte11R & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte11R <<= 1;
+  }
+
+  for (uint8_t i = 0; i < 8; i++) 
+  {
+    if (_byte11B & 0x80)     // High
+    {
+      PORTB |= (1 << PINB3);
+      nop6;
+      PORTB &= ~(1 << PINB3);
+    }
+    else                  // Low
+    {
+      PORTB |= (1 << PINB3);
+      // nop1;
+      PORTB &= ~(1 << PINB3);
+    }
+    nop5;
+    _byte11B <<= 1;
+  }
+  asm("sei");
 }
 
 void Geekble_LieDetector::Shock(uint8_t ShockVoltage)
@@ -344,10 +1012,7 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
   {
     case Normal_Lighting:
     {
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
+      bytes_out(GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B);
       *Update_Time_Lighting += 9897857;
       break;
     }
@@ -357,17 +1022,11 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
       uint8_t UpdateInterval = 197;
       if (((Time_Spent / UpdateInterval) % 2) == 0)
       {
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-      byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);  
+        bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
       }
       else
       {
-      byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);
-      byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);
-      byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);
-      byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);    byte_out(0);  byte_out(0);  byte_out(0);  
+        bytes_out(GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B);
       }
 
       *Update_Time_Lighting += UpdateInterval;
@@ -387,33 +1046,25 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
 
         for (uint8_t Calc_Temp = 0; Calc_Temp < ((Sequence_Lights % 40) + 1); Calc_Temp++)
         {
-          Program_GRB_G = (Program_GRB_G * 0.9);
-          Program_GRB_R = (Program_GRB_R * 0.9);
-          Program_GRB_B = (Program_GRB_B * 0.9);
+          Program_GRB_G = (Program_GRB_G * 0.92);
+          Program_GRB_R = (Program_GRB_R * 0.92);
+          Program_GRB_B = (Program_GRB_B * 0.92);
         }
-
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
+        bytes_out(Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B);
       }
       else
       {      
-        uint8_t Program_GRB_G = (GRB_G * 0.1216);
-        uint8_t Program_GRB_R = (GRB_R * 0.1216);
-        uint8_t Program_GRB_B = (GRB_B * 0.1216);
+        uint8_t Program_GRB_G = (GRB_G * 0.1887);
+        uint8_t Program_GRB_R = (GRB_R * 0.1887);
+        uint8_t Program_GRB_B = (GRB_B * 0.1887);
 
         for (uint8_t Calc_Temp = 0; Calc_Temp < (Sequence_Lights % 20); Calc_Temp++)
         {
-          Program_GRB_G = (Program_GRB_G * 1.11);
-          Program_GRB_R = (Program_GRB_R * 1.11);
-          Program_GRB_B = (Program_GRB_B * 1.11);
+          Program_GRB_G = (Program_GRB_G * 100 / 92);
+          Program_GRB_R = (Program_GRB_R * 100 / 92);
+          Program_GRB_B = (Program_GRB_B * 100 / 92);
         }
-        
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
-        byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);    byte_out(Program_GRB_G);  byte_out(Program_GRB_R);  byte_out(Program_GRB_B);
+        bytes_out(Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B, Program_GRB_G, Program_GRB_R, Program_GRB_B);
       }
 
       *Update_Time_Lighting += UpdateInterval;
@@ -431,40 +1082,22 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
       switch (Sequence_Lights)
       {
         case 0:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
           break;
         case 1:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, 0, 0, 0, 0, 0, 0, 0, 0, 0);
           break;
         case 2:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
+          bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B);
           break;
         case 3:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, 0, 0, 0, 0, 0, 0, 0, 0, 0);
           break;
         case 4:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0, 0, 0, 0, 0, 0, 0, 0, 0, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
           break;
         case 5:
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, GRB_G, GRB_R, GRB_B, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
           break;
         default:
           break;
@@ -485,28 +1118,16 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
       switch (Sequence_Lights)
       {
         case 0:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0);
           break;
         case 1:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        
+          bytes_out(0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0);
           break;
         case 2:
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);
+          bytes_out(0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, 0,0,0);
           break;
         case 3:
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    
-          byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);
-          byte_out(0);      byte_out(0);      byte_out(0);        byte_out(0);      byte_out(0);      byte_out(0);        byte_out(GRB_G);  byte_out(GRB_R);  byte_out(GRB_B);    
+          bytes_out(GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B, GRB_G,GRB_R,GRB_B, 0,0,0, 0,0,0, 0,0,0, 0,0,0, GRB_G,GRB_R,GRB_B);
           break;
         default:
           break;
@@ -518,7 +1139,7 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
 
     case Metrix_Lighting:
     {
-      uint8_t UpdateInterval = 293;
+      uint8_t UpdateInterval = 379;
       uint8_t GRB_G0 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R0 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B0 = GRB_B / (1.1 * random(1, 10));
       uint8_t GRB_G1 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R1 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B1 = GRB_B / (1.1 * random(1, 10));
       uint8_t GRB_G2 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R2 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B2 = GRB_B / (1.1 * random(1, 10));
@@ -531,12 +1152,8 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
       uint8_t GRB_G9 = GRB_G / (1.1 * random(1, 10));   uint8_t GRB_R9 = GRB_R / (1.1 * random(1, 10));   uint8_t GRB_B9 = GRB_B / (1.1 * random(1, 10));
       uint8_t GRB_G10 = GRB_G / (1.1 * random(1, 10));  uint8_t GRB_R10 = GRB_R / (1.1 * random(1, 10));  uint8_t GRB_B10 = GRB_B / (1.1 * random(1, 10));
       uint8_t GRB_G11 = GRB_G / (1.1 * random(1, 10));  uint8_t GRB_R11 = GRB_R / (1.1 * random(1, 10));  uint8_t GRB_B11 = GRB_B / (1.1 * random(1, 10));
-
-      byte_out(GRB_G0); byte_out(GRB_R0); byte_out(GRB_B0);   byte_out(GRB_G1); byte_out(GRB_R1); byte_out(GRB_B1);   byte_out(GRB_G2); byte_out(GRB_R2); byte_out(GRB_B2);   
-      byte_out(GRB_G3); byte_out(GRB_R3); byte_out(GRB_B3);   byte_out(GRB_G4); byte_out(GRB_R4); byte_out(GRB_B4);   byte_out(GRB_G5); byte_out(GRB_R5); byte_out(GRB_B5);   
-      byte_out(GRB_G6); byte_out(GRB_R6); byte_out(GRB_B6);   byte_out(GRB_G7); byte_out(GRB_R7); byte_out(GRB_B7);   byte_out(GRB_G8); byte_out(GRB_R8); byte_out(GRB_B8);   
-      byte_out(GRB_G9); byte_out(GRB_R9); byte_out(GRB_B9);   byte_out(GRB_G10); byte_out(GRB_R10); byte_out(GRB_B10);byte_out(GRB_G11); byte_out(GRB_R11); byte_out(GRB_B11);   
-
+      bytes_out(GRB_G0, GRB_R0, GRB_B0, GRB_G1, GRB_R1, GRB_B1, GRB_G2, GRB_R2, GRB_B2, GRB_G3, GRB_R3, GRB_B3, GRB_G4, GRB_R4, GRB_B4, GRB_G5, GRB_R5, GRB_B5, GRB_G6, GRB_R6, GRB_B6, GRB_G7, GRB_R7, GRB_B7, GRB_G8, GRB_R8, GRB_B8, GRB_G9, GRB_R9, GRB_B9, GRB_G10, GRB_R10, GRB_B10, GRB_G11, GRB_R11, GRB_B11);
+    
       *Update_Time_Lighting += UpdateInterval;
       break;
     }
@@ -551,49 +1168,49 @@ void Geekble_LieDetector::Program_Lighting(uint8_t GRB_R, uint8_t GRB_G, uint8_t
 
 void Geekble_LieDetector::RunMusic(uint8_t Time_sec, uint16_t Notes[][2])
 {
-  Serial.println("*** RunMusic ***");
+  Serial.println("*** Run Music ***");
   uint8_t FunctionSelect = (1 << Function_Music);
   ServiceEngine(FunctionSelect, Time_sec, Notes, NULL, NULL);
 }
 
 void Geekble_LieDetector::RunLights(uint8_t Time_sec, uint8_t Lights[])
 {
-  Serial.println("*** RunLights ***");
+  Serial.println("*** Run Lights ***");
   uint8_t FunctionSelect = (1 << Function_Lights);
   ServiceEngine(FunctionSelect, Time_sec, NULL, Lights, NULL);
 }
 
 void Geekble_LieDetector::RunShocks(uint8_t Time_sec, uint8_t Shocks[])
 {
-  Serial.println("*** RunShocks ***");
+  Serial.println("*** Run Shocks ***");
   uint8_t FunctionSelect = (1 << Function_Shock);
   ServiceEngine(FunctionSelect, Time_sec, NULL, NULL, Shocks);
 }
 
 uint16_t Geekble_LieDetector::RunResistanceCheck(uint8_t Time_sec)
 {
-  Serial.println("*** RunResistanceCheck ***");
+  Serial.println("*** Run Resistance Check ***");
   uint8_t FunctionSelect = (1 << Function_R_Check);
   return ServiceEngine(FunctionSelect, Time_sec, NULL, NULL, NULL);
 }
 
 uint16_t Geekble_LieDetector::GetResistance(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[])
 {
-  Serial.println("*** RunCalibration ***");
+  Serial.println("*** Get Resistance ***");
   uint8_t FunctionSelect = ((1 << Function_Music) | (1 << Function_Lights) | (1 << Function_R_Check));
   return ServiceEngine(FunctionSelect, Time_sec, Notes, Lights, NULL);
 }
 
 void Geekble_LieDetector::ReturnResult_Truth(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[])
 {
-  Serial.println("*** RunResult_Truth ***");
+  Serial.println("*** Return Result - Truth ***");
   uint8_t FunctionSelect = ((1 << Function_Music) | (1 << Function_Lights));
   ServiceEngine(FunctionSelect, Time_sec, Notes, Lights, NULL);
 }
 
 void Geekble_LieDetector::ReturnResult_Lier(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[], uint8_t Shocks[])
 {
-  Serial.println("*** RunResult_Lier ***");
+  Serial.println("*** Return Result - Lier ***");
   uint8_t FunctionSelect = ((1 << Function_Music) | (1 << Function_Lights) | (1 << Function_Shock));
   ServiceEngine(FunctionSelect, Time_sec, Notes, Lights, Shocks);
 }

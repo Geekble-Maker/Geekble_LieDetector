@@ -1,6 +1,6 @@
 # Welcome to Geekble_LieDetector<br>
 <br>
-Geekble_Oscillator generates pulse from 8MHz to 31.25KHz with fixed 50% duty ratio.<br>
+Library for Geekble LieDetector Module.<br>
 <br>
 This Library occupies Timer Counter 1, which will affect the functions or library depend on Timer Counter 1.<br>
 <br>
@@ -21,13 +21,6 @@ This Library occupies Timer Counter 1, which will affect the functions or librar
         uint16_t Geekble_LieDetector::GetResistance(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[]);
         void Geekble_LieDetector::ReturnResult_Truth(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[]);
         void Geekble_LieDetector::ReturnResult_Lier(uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[], uint8_t Shocks[]);
-
-        private:
-        void byte_out(uint8_t _byte) ;
-        void Geekble_LieDetector::Shock(uint8_t ShockVoltage);
-        uint16_t Geekble_LieDetector::ResistanceCheck_ADC2Kohm(uint16_t ADC_Value);
-        uint16_t Geekble_LieDetector::ServiceEngine(uint8_t FunctionSelect, uint8_t Time_sec, uint16_t Notes[][2], uint8_t Lights[], uint8_t Shocks[]);
-        void Program_Lighting (uint8_t GRB_R, uint8_t GRB_G, uint8_t GRB_B, uint8_t Lighting_Mode, uint32_t Time_Spent, uint32_t *Update_Time_Lighting);
 
 ***
 ## Example<br>
@@ -59,7 +52,7 @@ This Library occupies Timer Counter 1, which will affect the functions or librar
         unsigned int Music_WatchYourHand[][2] = {{NOTE_G4, 400}, {NOTE_REST, 200}, {NOTE_FS4, 200}, {NOTE_G4, 200}, {NOTE_A4, 400}, {NOTE_REST, 200}, {NOTE_D4, 200}, {NOTE_E4, 200}, {NOTE_F4, 400}, {NOTE_REST, 200}, {NOTE_B3, 200}, {NOTE_C4, 200}, {NOTE_D4, 400}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 2000}, {NOTE_END}};
         unsigned int Music_DingDongDengDong[][2] = {{NOTE_C3, 512}, {NOTE_E3, 512}, {NOTE_G3, 512}, {NOTE_C4, 512}, {NOTE_REST, 1024}, {NOTE_END}};
         unsigned int Music_Annoying[][2] = {{1000, 50}, {1100, 50}, {1200, 50}, {1300, 50}, {1400, 50}, {1500, 50}, {NOTE_END}};
-        unsigned int Music_Beep[][2] = {{NOTE_G4, 300}, {NOTE_REST, 1200}, {NOTE_END}};
+        unsigned int Music_Beep[][2] = {{NOTE_REST, 300}, {NOTE_G4, 300}, {NOTE_REST, 400}, {NOTE_END}};
 
         unsigned int Music_Mute[][2] = {{NOTE_REST, 1499}, {NOTE_END}};
 

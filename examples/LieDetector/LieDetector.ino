@@ -25,8 +25,7 @@ unsigned int Music_C_Chord[][2] = {{NOTE_C3, 256}, {NOTE_E3, 256}, {NOTE_G3, 256
 unsigned int Music_WatchYourHand[][2] = {{NOTE_G4, 400}, {NOTE_REST, 200}, {NOTE_FS4, 200}, {NOTE_G4, 200}, {NOTE_A4, 400}, {NOTE_REST, 200}, {NOTE_D4, 200}, {NOTE_E4, 200}, {NOTE_F4, 400}, {NOTE_REST, 200}, {NOTE_B3, 200}, {NOTE_C4, 200}, {NOTE_D4, 400}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_G3, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 200}, {NOTE_C4, 200}, {NOTE_REST, 2000}, {NOTE_END}};
 unsigned int Music_DingDongDengDong[][2] = {{NOTE_C3, 512}, {NOTE_E3, 512}, {NOTE_G3, 512}, {NOTE_C4, 512}, {NOTE_REST, 1024}, {NOTE_END}};
 unsigned int Music_Annoying[][2] = {{1000, 50}, {1100, 50}, {1200, 50}, {1300, 50}, {1400, 50}, {1500, 50}, {NOTE_END}};
-unsigned int Music_Beep[][2] = {{NOTE_G4, 300}, {NOTE_REST, 1200}, {NOTE_END}};
-
+unsigned int Music_Beep[][2] = {{NOTE_REST, 300}, {NOTE_G4, 300}, {NOTE_REST, 400}, {NOTE_END}};
 unsigned int Music_Mute[][2] = {{NOTE_REST, 1499}, {NOTE_END}};
 
 /*  Lights  */
@@ -46,6 +45,7 @@ unsigned char Blue_BreathMode[4] = {0, 0, 200, Breath_Lighting};
 unsigned char White_SwingHorizontalMode[4] = {100, 100, 100, Swing_Horizontal_Lighting};
 unsigned char Green_SwingVerticalMode[4] = {0, 200, 0, Swing_Vertical_Lighting};
 unsigned char Purple_MetrixMode[4] = {200, 40, 30, Metrix_Lighting};
+unsigned char GeekbleColor_MetrixMode[4] = {40, 200, 30, Metrix_Lighting};
 
 /*  Shocks  */
 /*
@@ -80,6 +80,7 @@ void loop()
 
     else if (SW_TEMP == 1)  // Short Press Function -> Test Mode
     {
+        //            LieDetector.RunLights(10, Blue_BreathMode);
         if (Calibration_Resistance !=0)
         {
             Tested_Resistance = LieDetector.GetResistance(7, Music_WatchYourHand, White_SwingHorizontalMode);
@@ -100,7 +101,7 @@ void loop()
             else
             {
                 Serial.println("Result: PASS!");
-                LieDetector.ReturnResult_Truth(3, Music_DingDongDengDong, Green_SwingVerticalMode);
+                LieDetector.ReturnResult_Truth(3, Music_DingDongDengDong, GeekbleColor_MetrixMode);
             }
 
             LieDetector.RunLights(1, GeekbleColor_NormalMode);
@@ -119,6 +120,7 @@ void loop()
         Serial.print("Current Hand Resistance is ");
         Serial.print(Calibration_Resistance);
         Serial.println("KR.");
+        LieDetector.RunLights(1, GeekbleColor_NormalMode);
     }
 
 }
